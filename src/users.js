@@ -30,18 +30,10 @@ export async function addNewUser(req, res) {
     userLogin(req, res)
 }
 
+// security to make sure person is allowed
 export async function updateUser(req, res) {
- const token = req.headers.authorization
- const decodedToken = jwt.verify(token, secretKey)
  const { uid } = req.params // profile they want to update
-if(uid !== decodedToken.uid) {
-    res.status(401).send({message: 'Invalid token ID' })
-    return
-}
-const db = dbConnect()
-await db.collection('users').doc(uid).update(rq.body)
-let user = doc.data()
-user.uid = doc.id
-user.password = undefined
-re.status(202).send({message: 'updated'})
+ const db = dbConnect()
+ await db.collection('users').doc(uid).update(req.body) // updating the user
+ re.status(202).send({message: 'updated'})
 }
